@@ -28,7 +28,7 @@ const SearchContainer = () => {
                 console.log(err);
             }
         };
-        fetchData()
+        fetchData(input);
     }, [input]);
 
     // Listen for scrolling and fetch more items when needed
