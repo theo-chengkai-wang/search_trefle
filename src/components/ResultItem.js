@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ResultItem = ({info}) => {
+const ResultItem = ({ info }) => {
     return (
         <li>
             <p>{info.common_name}</p>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import './SearchContainer.css';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
@@ -6,8 +6,8 @@ import SearchResults from '../components/SearchResults';
 import axios from 'axios';
 
 const SearchContainer = () => {
-    const [input, setInput] = useState ("");
-    const [results, setResults] = useState ([]);
+    const [input, setInput] = useState("");
+    const [results, setResults] = useState([]);
     const [nextPage, setNextPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -17,13 +17,19 @@ const SearchContainer = () => {
         const fetchData = async (searchInput) => {
             setIsLoading(true);
             setNextPage(2);
-            try{
-                const result = await axios(`https://trefle.io/api/v1/plants/search?token=RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw&page=1&q=${searchInput}`);
-                //console.log(JSON.stringify(result));
+
+            try {
+                const result = await axios.get('https://trefle.io/api/v1/plants/search', {
+                    params: {
+                        token: 'RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw',
+                        page: 1,
+                        q: searchInput
+                    }
+                });
+
                 setResults(result.data.data);
                 setIsLoading(false);
-            }
-            catch(err) {
+            } catch (err) {
                 setIsLoading(false);
                 console.log(err);
             }
@@ -33,31 +39,39 @@ const SearchContainer = () => {
 
     // Listen for scrolling and fetch more items when needed
 
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        }
-    }, [isLoading]);
-
-    const handleScroll = () => {
-        if (!isLoading && window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight-1) {
+    const handleScroll = useCallback(() => {
+        if (!isLoading && window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 1) {
             const fetchData = async (searchInput) => {
                 setIsLoading(true);
                 setNextPage(nextPage + 1);
-                try{
-                    const result = await axios(`https://trefle.io/api/v1/plants/search?token=RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw&page=${nextPage}&q=${searchInput}`);
+
+                try {
+                    const result = await axios.get('https://trefle.io/api/v1/plants/search', {
+                        params: {
+                            token: 'RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw',
+                            page: nextPage,
+                            q: searchInput
+                        }
+                    });
                     //console.log(JSON.stringify(result));
                     setResults((res) => [...res, ...result.data.data]);
-                }
-                catch(err) {
+                } catch (err) {
                     console.log(err);
                 }
+
                 setIsLoading(false);
             };
             fetchData(input);
         }
-    };
+    }, [input, nextPage, isLoading]);
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        }
+    }, [handleScroll]);
 
     //onChange
     const handleChange = (inputValue) => {
@@ -65,8 +79,8 @@ const SearchContainer = () => {
     }
     return (
         <>
-            <SearchBar inputValue =  {input} onChange = {handleChange}/>   
-            <SearchResults results = {results} isLoading = {isLoading}/>
+            <SearchBar inputValue={input} onChange={handleChange} />
+            <SearchResults results={results} isLoading={isLoading} />
         </>
     );
 };
