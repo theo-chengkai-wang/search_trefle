@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './SearchContainer.css';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
+//import {debounce} from 'lodash';
 import axios from 'axios';
 
 const SearchContainer = () => {
@@ -11,6 +12,7 @@ const SearchContainer = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     // Query API when input changes
+    
     useEffect(() => {
         const fetchData = async (searchInput) => {
             setIsLoading(true);
@@ -26,7 +28,7 @@ const SearchContainer = () => {
                 console.log(err);
             }
         };
-        fetchData(input);
+        fetchData()
     }, [input]);
 
     // Listen for scrolling and fetch more items when needed
