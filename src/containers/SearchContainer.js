@@ -21,12 +21,11 @@ const SearchContainer = () => {
                 const result = await axios(`https://trefle.io/api/v1/plants/search?token=RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw&page=1&q=${searchInput}`);
                 //console.log(JSON.stringify(result));
                 setResults(result.data.data);
-                setIsLoading(false);
             }
             catch(err) {
-                setIsLoading(false);
                 console.log(err);
             }
+            setIsLoading(false);
         };
         fetchData(input);
     }, [input]);
