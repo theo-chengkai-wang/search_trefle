@@ -1,3 +1,7 @@
-.SearchBar {
-
+.search-bar {
+    position: fixed;
+}
+input {
+    width:100vw;
+    height: 30px;
 }

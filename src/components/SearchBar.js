@@ -6,7 +6,7 @@ const SearchBar = ({ inputValue, onChange }) => {
         onChange(e.target.value);
     }
     return (
-        <div className="SearchBar">
+        <div className="search-bar">
             <input type="text" onChange={handleChange} value={inputValue} />
         </div>
     );
