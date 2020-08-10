@@ -1,12 +1,13 @@
 import React from 'react';
 import ResultItem from './ResultItem';
+import './SearchResults.css';
 
 const SearchResults = ({results, isLoading}) => {
     return(
-        <ul>
+        <div className = "SearchResults">
             {results.map(resItem => <ResultItem info = {resItem} key = {resItem.id} />)}
             {isLoading && 'loading...'}
-        </ul>
+        </div>
     );
 };
 
