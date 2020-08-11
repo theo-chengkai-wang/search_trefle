@@ -10,11 +10,12 @@ const SearchContainer = () => {
     const [results, setResults] = useState([]);
     const [nextPage, setNextPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
-
+    const [isEnd, setIsEnd] = useState(false);
     // Query API when input changes
     
     useEffect(() => {
         const fetchData = async (searchInput) => {
+            setIsEnd(false);
             setIsLoading(true);
             setNextPage(2);
 
@@ -26,12 +27,12 @@ const SearchContainer = () => {
                         q: searchInput
                     }
                 });
-
                 setResults(result.data.data);
                 setIsLoading(false);
             } catch (err) {
-                setIsLoading(false);
                 console.log(err);
+                setIsLoading(false);
+                setIsEnd(true);
             }
         };
         fetchData(input);
@@ -40,7 +41,7 @@ const SearchContainer = () => {
     // Listen for scrolling and fetch more items when needed
 
     const handleScroll = useCallback(() => {
-        if (!isLoading && window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 1) {
+        if (!isEnd && !isLoading && window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 1) {
             const fetchData = async (searchInput) => {
                 setIsLoading(true);
                 setNextPage(nextPage + 1);
@@ -55,15 +56,16 @@ const SearchContainer = () => {
                     });
                     //console.log(JSON.stringify(result));
                     setResults((res) => [...res, ...result.data.data]);
+                    setIsLoading(false);
                 } catch (err) {
                     console.log(err);
+                    setIsLoading(false);
+                    setIsEnd(true);
                 }
-
-                setIsLoading(false);
             };
             fetchData(input);
         }
-    }, [input, nextPage, isLoading]);
+    }, [input, nextPage, isLoading, isEnd]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
@@ -80,7 +82,7 @@ const SearchContainer = () => {
     return (
         <>
             <SearchBar inputValue={input} onChange={handleChange} />
-            <SearchResults results={results} isLoading={isLoading} />
+            <SearchResults results={results} isLoading={isLoading} isEnd={isEnd} />
         </>
     );
 };
