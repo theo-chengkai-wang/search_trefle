@@ -1,9 +1,14 @@
 import React from 'react';
-import SearchContainer from './containers/SearchContainer';
+import SearchContainer from './routes/search/containers/SearchContainer';
+import Home from './routes/home/Home';
+import { Router } from '@reach/router';
 
 function App() {
   return (
-    <SearchContainer />
+    <Router>
+        <Home path = "/"/>
+        <SearchContainer path = "/search"/>
+    </Router>
   );
 }
 

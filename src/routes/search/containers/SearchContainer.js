@@ -5,8 +5,8 @@ import SearchResults from '../components/SearchResults';
 //import {debounce} from 'lodash';
 import axios from 'axios';
 
-const SearchContainer = () => {
-    const [input, setInput] = useState("");
+const SearchContainer = ({ location }) => {
+    const [input, setInput] = useState(new URLSearchParams(location.search).get('query'));
     const [results, setResults] = useState([]);
     const [nextPage, setNextPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
