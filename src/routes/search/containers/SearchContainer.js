@@ -2,8 +2,8 @@ import React, { useCallback, useState, useEffect } from 'react';
 import './SearchContainer.css';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
-//import {debounce} from 'lodash';
-import axios from 'axios';
+// import {debounce} from 'lodash';
+// import axios from 'axios';
 
 const SearchContainer = ({ location }) => {
     const [input, setInput] = useState(new URLSearchParams(location.search).get('query'));
@@ -20,14 +20,23 @@ const SearchContainer = ({ location }) => {
             setNextPage(2);
 
             try {
-                const result = await axios.get('https://trefle.io/api/v1/plants/search', {
-                    params: {
-                        token: 'RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw',
-                        page: 1,
-                        q: searchInput
+                // const result = await axios.get('https://trefle.io/api/v1/plants/search', {
+                //     params: {
+                //         token: 'RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw',
+                //         page: 1,
+                //         q: searchInput
+                //     }
+                // });
+                // setResults(result.data.data);
+                // setIsLoading(false);
+                const result = await fetch(`https://trefle.io/api/v1/plants/search?token=RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw&page=1&q=${searchInput}`,
+                    {
+                        method: 'GET', 
+                        mode: 'cors'
                     }
-                });
-                setResults(result.data.data);
+                );
+                const data = await result.json();
+                setResults(data.data);
                 setIsLoading(false);
             } catch (err) {
                 console.log(err);
@@ -47,15 +56,24 @@ const SearchContainer = ({ location }) => {
                 setNextPage(nextPage + 1);
 
                 try {
-                    const result = await axios.get('https://trefle.io/api/v1/plants/search', {
-                        params: {
-                            token: 'RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw',
-                            page: nextPage,
-                            q: searchInput
-                        }
-                    });
-                    //console.log(JSON.stringify(result));
-                    setResults((res) => [...res, ...result.data.data]);
+                    // const result = await axios.get('https://trefle.io/api/v1/plants/search', {
+                    //     params: {
+                    //         token: 'RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw',
+                    //         page: nextPage,
+                    //         q: searchInput
+                    //     }
+                    // });
+                    // setResults((res) => [...res, ...result.data.data]);
+                    // setIsLoading(false);
+                    // //console.log(JSON.stringify(result));
+                    const result = await fetch(`https://trefle.io/api/v1/plants/search?token=RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw&page=${nextPage}&q=${searchInput}`,
+                        {
+                        method: 'GET', 
+                        mode: 'cors'
+                      }
+                    );
+                    const data = await result.json();
+                    setResults((res) => [...res, ...data.data]);
                     setIsLoading(false);
                 } catch (err) {
                     console.log(err);
