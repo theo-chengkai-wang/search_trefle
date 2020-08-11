@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Note: 
+
+You need to install a CORS disabling plugin in your browser before you can get results in your search.
+
 ## Available Scripts
 
 In the project directory, you can run:
