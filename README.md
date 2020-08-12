@@ -2,7 +2,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Note: 
 
+### CORS
 You need to install a CORS disabling plugin in your browser before you can get results in your search.
+
+### API
+The API we used is from https://trefle.io.
 
 ## Available Scripts
 
