@@ -42,6 +42,8 @@
 }
 
 #main-input {
+    border-radius: 10px;
+    border-width: 1px;
     flex: 7;
     height: 100%;
 }

@@ -36,7 +36,7 @@ const SearchContainer = ({ location }) => {
                     }
                 );
                 const data = await result.json();
-                if (!data) {
+                if (!data.data) {
                     setIsEnd(true);
                 } else {
                     setResults(data.data);
@@ -78,7 +78,7 @@ const SearchContainer = ({ location }) => {
                       }
                     );
                     const data = await result.json();
-                    if (!data) {
+                    if (!data.data) {
                         setIsEnd(true);
                     } else {
                         setResults((res) => [...res, ...data.data]);
