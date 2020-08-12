@@ -4,7 +4,7 @@ import './SearchContainer.css';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
 // import {debounce} from 'lodash';
-import axios from 'axios';
+// import axios from 'axios';
 
 const SearchContainer = ({ location }) => {
     const [input, setInput] = useState(new URLSearchParams(location.search).get('query'));
