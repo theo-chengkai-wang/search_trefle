@@ -6,9 +6,12 @@ import Loader from 'react-loader-spinner';
 const SearchResults = ({results, isLoading, isEnd}) => {
     return(
         <>
-            <div className = "search-results">
-                {results.map(resItem => <ResultItem info = {resItem} key = {resItem.id} />)}
-            </div>
+            {
+                results && 
+                <div className = "search-results">
+                    {results.map(resItem => <ResultItem info = {resItem} key = {resItem.id} />)}
+                </div>
+            }
             <div className = "flags">
                 {isLoading && <Loader type="Hearts" color="#ffc0cb" height={80} width={80} />}
                 {isEnd && 'No more search results'}

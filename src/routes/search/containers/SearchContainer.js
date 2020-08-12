@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
+import { navigate } from '@reach/router';
 import './SearchContainer.css';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
@@ -11,33 +12,37 @@ const SearchContainer = ({ location }) => {
     const [nextPage, setNextPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [isEnd, setIsEnd] = useState(false);
+
     // Query API when input changes
-    
     useEffect(() => {
         const fetchData = async (searchInput) => {
             setIsEnd(false);
             setIsLoading(true);
             setNextPage(2);
-
             try {
-                const result = await axios.get('https://trefle.io/api/v1/plants/search', {
-                    params: {
-                        token: 'RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw',
-                        page: 1,
-                        q: searchInput
-                    }
-                });
-                setResults(result.data.data);
-                setIsLoading(false);
-                // const result = await fetch(`https://trefle.io/api/v1/plants/search?token=RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw&page=1&q=${searchInput}`,
-                //     {
-                //         method: 'GET', 
-                //         mode: 'cors'
+                // const result = await axios.get('https://trefle.io/api/v1/plants/search', {
+                //     params: {
+                //         token: 'RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw',
+                //         page: 1,
+                //         q: searchInput
                 //     }
-                // );
-                // const data = await result.json();
-                // setResults(data.data);
+                // });
+                // setResults(result.data.data);
                 // setIsLoading(false);
+                const result = await fetch(`https://trefle.io/api/v1/plants/search?token=RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw&page=1&q=${searchInput}`,
+                    {
+                        method: 'GET', 
+                        mode: 'cors'
+                    }
+                );
+                const data = await result.json();
+                if (!data) {
+                    setIsEnd(true);
+                } else {
+                    setResults(data.data);
+                }
+                setIsLoading(false);
+                await navigate(`/search?query=${input}`, {replace : true});
             } catch (err) {
                 console.log(err);
                 setIsLoading(false);
@@ -56,25 +61,29 @@ const SearchContainer = ({ location }) => {
                 setNextPage(nextPage + 1);
 
                 try {
-                    const result = await axios.get('https://trefle.io/api/v1/plants/search', {
-                        params: {
-                            token: 'RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw',
-                            page: nextPage,
-                            q: searchInput
-                        }
-                    });
-                    setResults((res) => [...res, ...result.data.data]);
-                    setIsLoading(false);
-                    // //console.log(JSON.stringify(result));
-                    // const result = await fetch(`https://trefle.io/api/v1/plants/search?token=RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw&page=${nextPage}&q=${searchInput}`,
-                    //     {
-                    //     method: 'GET', 
-                    //     mode: 'cors'
-                    //   }
-                    // );
-                    // const data = await result.json();
-                    // setResults((res) => [...res, ...data.data]);
+                    // const result = await axios.get('https://trefle.io/api/v1/plants/search', {
+                    //     params: {
+                    //         token: 'RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw',
+                    //         page: nextPage,
+                    //         q: searchInput
+                    //     }
+                    // });
+                    // setResults((res) => [...res, ...result.data.data]);
                     // setIsLoading(false);
+                    // //console.log(JSON.stringify(result));
+                    const result = await fetch(`https://trefle.io/api/v1/plants/search?token=RhKRa-adlcpW0LFy09dhzRJ2FDNkkgxz7trfadQ4FBw&page=${nextPage}&q=${searchInput}`,
+                        {
+                        method: 'GET', 
+                        mode: 'cors'
+                      }
+                    );
+                    const data = await result.json();
+                    if (!data) {
+                        setIsEnd(true);
+                    } else {
+                        setResults((res) => [...res, ...data.data]);
+                    }
+                    setIsLoading(false);
                 } catch (err) {
                     console.log(err);
                     setIsLoading(false);
