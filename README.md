@@ -8,6 +8,13 @@ You need to install a CORS disabling plugin in your browser before you can get r
 ### API
 The API we used is from https://trefle.io.
 
+### Summary
+This project was created for the sole purpose of demonstration for the homework given to the TechX 2020 Full Stack Web Development students. It's
+an simple implementation of a plant searching engine.
+#### Features
+- Consumes an external API
+- Searching and Infinite reload
+
 ## Available Scripts
 
 In the project directory, you can run:
